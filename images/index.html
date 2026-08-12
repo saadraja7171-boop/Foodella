@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOODELLA - Taste of Purity | Premium Dry Fruits & Masala</title>
+    
+    <!-- Google Fonts for Luxury Feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <style>
+        /* ============================================
+           CSS VARIABLES - LUXURY COLOR PALETTE
+           ============================================ */
+        :root {
+            --gold: #C5A059;
+            --gold-light: #E8D5A3;
+            --gold-dark: #8A6D2B;
+            --black: #000000;
+            --black-light: #0A0A0A;
+            --black-card: #111111;
+            --white: #FFFFFF;
+            --gray: #888888;
+            --gray-light: #CCCCCC;
+        }
+
+        /* ============================================
+           GLOBAL RESET & BASE STYLES
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        ::selection {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 4px;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 99999;
+            transition: transform 0.1s;
+        }
+
+        .cursor-outline {
+            width: 35px;
+            height: 35px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 99998;
+            transition: all 0.15s ease-out;
+        }
+
+        /* ============================================
+           PRELOADER
+           ============================================ */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--black);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #preloader .loader-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: var(--gold);
+            letter-spacing: 10px;
+            margin-bottom: 30px;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+
+        #preloader .loader-bar {
+            width: 200px;
+            height: 2px;
+            background: rgba(197, 160, 89, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #preloader .loader-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            animation: loading 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 12px 50px;
+            box-shadow: 0 2px 30px rgba(197, 160, 89, 0.1);
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-logo img {
+            height: 55px;
+            transition: all 0.4s ease;
+        }
+
+        .navbar.scrolled .nav-logo img {
+            height: 40px;
+        }
+
+        .nav-logo-text {
+            display: none;
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            letter-spacing: 5px;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-icons a {
+            color: var(--white);
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-icons a:hover {
+            color: var(--gold);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 28px;
+            height: 2px;
+            background: var(--gold);
+            transition: all 0.3s;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.25);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.8) 100%);
+            z-index: 1;
+        }
+
+        .hero-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float-particle 8s infinite;
+        }
+
+        @keyframes float-particle {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero-tagline {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+            opacity: 0;
+            animation: fadeInUp 1s 0.5s forwards;
+        }
+
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: 5rem;
+            letter-spacing: 15px;
+            color: var(--white);
+            margin-bottom: 10px;
+            opacity: 0;
+            animation: fadeInUp 1s 0.8s forwards;
+        }
+
+        .hero-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            letter-spacing: 8px;
+            color: var(--gold-light);
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 1s 1.1s forwards;
+        }
+
+        .hero-desc {
+            font-size: 1rem;
+            color: var(--gray-light);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+            opacity: 0;
+            animation: fadeInUp 1s 1.4s forwards;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeInUp 1s 1.7s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-primary {
+            padding: 15px 45px;
+            background: var(--gold);
+            color: var(--black);
+            border: 2px solid var(--gold);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(197, 160, 89, 0.3);
+        }
+
+        .btn-secondary {
+            padding: 15px 45px;
+            background: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background: var(--gold);
+            color: var(--black);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(197, 160, 89, 0.3);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            text-align: center;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator a {
+            color: var(--gold);
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-15px); }
+            60% { transform: translateX(-50%) translateY(-7px); }
+        }
+
+        /* ============================================
+           SECTION STYLING
+           ============================================ */
+        .section {
+            padding: 100px 50px;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-tag {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            letter-spacing: 8px;
+            color: var(--white);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .section-line {
+            width: 80px;
+            height: 2px;
+            background: var(--gold);
+            margin: 0 auto 20px;
+        }
+
+        .section-desc {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        /* ============================================
+           ABOUT / STORY SECTION
+           ============================================ */
+        .about {
+            background: var(--black-light);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-img {
+            position: relative;
+        }
+
+        .about-img img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+        }
+
+        .about-img::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--gold-dark);
+            z-index: -1;
+        }
+
+        .about-content .about-tag {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .about-content h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            letter-spacing: 5px;
+            margin-bottom: 25px;
+        }
+
+        .about-content p {
+            color: var(--gray-light);
+            line-height: 2;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .about-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(197, 160, 89, 0.2);
+        }
+
+        .stat-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+        }
+
+        .stat-item p {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gray);
+        }
+
+        /* ============================================
+           PRODUCTS SECTION
+           ============================================ */
+        .products {
+            background: var(--black);
+        }
+
+        .product-filters {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 30px;
+            background: transparent;
+            border: 1px solid var(--gold-dark);
+            color: var(--gray-light);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--black);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: var(--black-card);
+            border: 1px solid rgba(197, 160, 89, 0.15);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.5s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(197, 160, 89, 0.15);
+        }
+
+        .product-img {
+            position: relative;
+            overflow: hidden;
+            height: 300px;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s;
+        }
+
+        .product-card:hover .product-img img {
+            transform: scale(1.1);
+        }
+
+        .product-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.8) 100%);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 15px;
+            background: var(--gold);
+            color: var(--black);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-category {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .product-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        .product-desc {
+            font-size: 0.85rem;
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .product-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+        }
+
+        .product-add {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-add:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        /* ============================================
+           SPECIAL BANNER
+           ============================================ */
+        .special-banner {
+            padding: 0;
+            position: relative;
+            height: 60vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .special-banner-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .special-banner-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.3);
+        }
+
+        .special-banner-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            padding: 0 50px;
+        }
+
+        .special-banner-content h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            letter-spacing: 10px;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .special-banner-content p {
+            color: var(--gray-light);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* ============================================
+           WHY CHOOSE US
+           ============================================ */
+        .features {
+            background: var(--black-light);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 50px 30px;
+            border: 1px solid rgba(197, 160, 89, 0.1);
+            transition: all 0.4s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--gold);
+            background: rgba(197, 160, 89, 0.03);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 25px;
+        }
+
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        /* ============================================
+           TESTIMONIALS
+           ============================================ */
+        .testimonials {
+            background: var(--black);
+            overflow: hidden;
+        }
+
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonial-item {
+            text-align: center;
+            padding: 0 40px;
+            display: none;
+        }
+
+        .testimonial-item.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .testimonial-quote {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .testimonial-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            line-height: 2;
+            color: var(--gray-light);
+            margin-bottom: 30px;
+        }
+
+        .testimonial-author h4 {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .testimonial-author p {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .testimonial-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .testimonial-dot {
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--gold);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .testimonial-dot.active {
+            background: var(--gold);
+        }
+
+        /* ============================================
+           INSTAGRAM / GALLERY
+           ============================================ */
+        .gallery {
+            padding: 80px 0;
+            background: var(--black-light);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            height: 250px;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+            filter: brightness(0.7);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+            filter: brightness(1);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(197, 160, 89, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            opacity: 1;
+        }
+
+        .gallery-item-overlay i {
+            color: var(--white);
+            font-size: 1.5rem;
+        }
+
+        /* ============================================
+           NEWSLETTER
+           ============================================ */
+        .newsletter {
+            background: var(--black);
+            padding: 80px 50px;
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            letter-spacing: 5px;
+            margin-bottom: 15px;
+        }
+
+        .newsletter p {
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 15px 20px;
+            background: transparent;
+            border: 1px solid var(--gold-dark);
+            color: var(--white);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            outline: none;
+        }
+
+        .newsletter-form input:focus {
+            border-color: var(--gold);
+        }
+
+        .newsletter-form button {
+            padding: 15px 30px;
+            background: var(--gold);
+            border: 1px solid var(--gold);
+            color: var(--black);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background: var(--gold-light);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            background: var(--black-light);
+            padding: 80px 50px 30px;
+            border-top: 1px solid rgba(197, 160, 89, 0.15);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 50px;
+            max-width: 1200px;
+            margin: 0 auto 50px;
+        }
+
+        .footer-brand img {
+            height: 60px;
+            margin-bottom: 20px;
+        }
+
+        .footer-brand p {
+            color: var(--gray);
+            line-height: 1.8;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--gold-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .footer-social a:hover {
+            background: var(--gold);
+            color: var(--black);
+            border-color: var(--gold);
+        }
+
+        .footer-col h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            color: var(--gold);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul li a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--gold);
+        }
+
+        .footer-contact li {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            margin-bottom: 15px !important;
+        }
+
+        .footer-contact li i {
+            color: var(--gold);
+            font-size: 0.9rem;
+            margin-top: 3px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(197, 160, 89, 0.1);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-bottom p {
+            color: var(--gray);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        /* ============================================
+           SCROLL ANIMATIONS
+           ============================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           BACK TO TOP
+           ============================================ */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--gold);
+            color: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+            text-decoration: none;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--gold-light);
+            transform: translateY(-3px);
+        }
+
+        /* ============================================
+           RESPONSIVE DESIGN
+           ============================================ */
+        @media (max-width: 1024px) {
+            .products-grid { grid-template-columns: repeat(2, 1fr); }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .cursor-dot, .cursor-outline { display: none; }
+            
+            .navbar { padding: 15px 25px; }
+            .nav-links { 
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0,0,0,0.98);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+                transition: left 0.5s;
+            }
+            .nav-links.open { left: 0; }
+            .nav-links a { font-size: 1.2rem; letter-spacing: 5px; }
+            .menu-toggle { display: flex; }
+            
+            .hero-title { font-size: 2.5rem; letter-spacing: 8px; }
+            .hero-tagline { font-size: 1.5rem; }
+            .hero-subtitle { font-size: 0.8rem; letter-spacing: 4px; }
+            .hero-btns { flex-direction: column; align-items: center; }
+            
+            .section { padding: 60px 25px; }
+            .section-title { font-size: 1.8rem; letter-spacing: 4px; }
+            
+            .about-grid { grid-template-columns: 1fr; }
+            .about-img img { height: 300px; }
+            .about-stats { flex-direction: column; gap: 20px; }
+            
+            .products-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .gallery-item { height: 180px; }
+            
+            .special-banner-content h2 { font-size: 1.8rem; letter-spacing: 4px; }
+            
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer { padding: 60px 25px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-logo">FOODELLA</div>
+        <div class="loader-bar"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="nav-logo">
+            <img src="images/2026-08-10 024709.png" alt="FOODELLA Logo">
+        </a>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">Our Story</a></li>
+            <li><a href="#products">Pantry</a></li>
+            <li><a href="#features">Why Us</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="#"><i class="fas fa-search"></i></a>
+            <a href="#"><i class="fas fa-shopping-bag"></i></a>
+            <a href="#"><i class="fas fa-user"></i></a>
+        </div>
+        <div class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg">
+         <img src="c:\Users\GA\Desktop\images\Gemini_Generated_Image_ewjerwewjerwewje.png" alt="Premium Spices">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-particles" id="particles"></div>
+        <div class="hero-content">
+            <p class="hero-tagline">Taste of Purity</p>
+            <h1 class="hero-title">FOODELLA</h1>
+            <p class="hero-subtitle">Pure & Honest Ingredients</p>
+            <p class="hero-desc">Handpicked Premium Dry Fruits & Stone-Ground Masale. 100% Authentic Purity from Lahore, Pakistan.</p>
+            <div class="hero-btns">
+                <a href="#products" class="btn-primary">Explore Pantry</a>
+                <a href="#about" class="btn-secondary">Our Story</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <a href="#about"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about" id="about">
+        <div class="about-grid">
+            <div class="about-img reveal">
+             <img src="images/some-assorted-nuts-dried-fruits-with-pecan-pistachios-almond-peanut-cashew-pine-nuts--different-bowls-black-pan-flat-lay_176474-2063 (1).avif" alt="Premium Dry Fruits Collection">
+            </div>
+            <div class="about-content reveal">
+                <p class="about-tag">Our Heritage</p>
+                <h2>THE ART OF <br><span style="color: var(--gold);">PURE TASTE</span></h2>
+                <p>Founded in the heart of Lahore, FOODELLA was born from a simple yet profound belief — that every kitchen deserves ingredients of uncompromising purity. We source the finest dry fruits from the orchards of Gilgit and Chitral, and handpick the most aromatic spices from the fields of Punjab.</p>
+                <p>Each product is stone-ground, hand-sorted, and packed with care to preserve its natural essence. No additives. No preservatives. Just pure, honest ingredients — the way nature intended.</p>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <h3>100%</h3>
+                        <p>Pure & Natural</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>50+</h3>
+                        <p>Premium Products</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>10K+</h3>
+                        <p>Happy Families</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="section products" id="products">
+        <div class="section-header reveal">
+            <p class="section-tag">Curated Selection</p>
+            <h2 class="section-title">Our Pantry</h2>
+            <div class="section-line"></div>
+            <p class="section-desc">Discover our handpicked collection of premium dry fruits and stone-ground masale, crafted for those who accept nothing but the finest.</p>
+        </div>
+        
+        <div class="product-filters reveal">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="dry-fruits">Dry Fruits</button>
+            <button class="filter-btn" data-filter="masala">Masala</button>
+        </div>
+
+        <div class="products-grid">
+            <!-- Product 1 -->
+            <div class="product-card reveal" data-category="dry-fruits">
+                <div class="product-img">
+                    <img src="images/images.jfif" alt="Premium Cashews">
+                    <div class="product-overlay"></div>
+                    <span class="product-badge">Bestseller</span>
+                </div>
+                <div class="product-info">
+                    <p class="product-category">Dry Fruits</p>
+                    <h3 class="product-name">Premium Cashews (Kaju)</h3>
+                    <p class="product-desc">Whole W240 grade, perfectly roasted with a hint of pink salt.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">₨ 2,500</span>
+                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card reveal" data-category="masala">
+                <div class="product-img">
+                    <img src="images/lakadong-turmeric-powder.jpg" alt="Haldi Powder">
+                    <div class="product-overlay"></div>
+                    <span class="product-badge">Organic</span>
+                </div>
+                <div class="product-info">
+                    <p class="product-category">Masala</p>
+                    <h3 class="product-name">Lakadong Haldi</h3>
+                    <p class="product-desc">Stone-ground turmeric with 7-9% curcumin content from Meghalaya.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">₨ 850</span>
+                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card reveal" data-category="dry-fruits">
+                <div class="product-img">
+               <img src="https://i.ibb.co/jPX3J6xH/f9423201e0135d809d24a434077d275b-jpg-720x720q80.jpg" alt="Product Name">" alt="Pistachios">
+                    <div class="product-overlay"></div>
+                </div>
+                <div class="product-info">
+                    <p class="product-category">Dry Fruits</p>
+                    <h3 class="product-name">Iranian Pistachios</h3>
+                    <p class="product-desc">Naturally opened, roasted & salted kernels from Rafsanjan.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">₨ 3,200</span>
+                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card reveal" data-category="masala">
+                <div class="product-img">
+                    <img src="images/images(2).jfif" alt="Lal Mirch">
+                    <div class="product-overlay"></div>
+                    <span class="product-badge">Hot</span>
+                </div>
+                <div class="product-info">
+                    <p class="product-category">Masala</p>
+                    <h3 class="product-name">Kashmiri Lal Mirch</h3>
+                    <p class="product-desc">Stone-ground red chilli powder, vibrant color with mild heat.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">₨ 650</span>
+                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="product-card reveal" data-category="dry-fruits">
+                <div class="product-img">
+                    <img src="images/images(3).jfif" alt="Almonds">
+                    <div class="product-overlay"></div>
+                    <span class="product-badge">Premium</span>
+                </div>
+                <div class="product-info">
+                    <p class="product-category">Dry Fruits</p>
+                    <h3 class="product-name">Afghan Almonds</h3>
+                    <p class="product-desc">Mamra almonds, the king of almonds — naturally sweet & nutrient-dense.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">₨ 2,800</span>
+                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="product-card reveal" data-category="masala">
+                <div class="product-img">
+                    <img src="images/images(4).jfif" alt="Garam Masala">
+                    <div class="product-overlay"></div>
+                    <span class="product-badge">Signature</span>
+                </div>
+                <div class="product-info">
+                    <p class="product-category">Masala</p>
+                    <h3 class="product-name">FOODELLA Garam Masala</h3>
+                    <p class="product-desc">Our signature blend of 12 hand-ground spices — a family recipe.</p>
+                    <div class="product-bottom">
+                        <span class="product-price">₨ 1,200</span>
+                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Banner -->
+    <section class="special-banner">
+        <div class="special-banner-bg">
+            <img src="images/images(5).jfif" alt="Spices Banner">
+        </div>
+        <div class="special-banner-content reveal">
+            <h2>TASTE OF PURITY</h2>
+            <p>Every grain tells a story of heritage, every nut carries the warmth of Pakistani soil. At FOODELLA, we don't just sell ingredients — we deliver a legacy of purity to your kitchen.</p>
+            <a href="#products" class="btn-primary">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features" id="features">
+        <div class="section-header reveal">
+            <p class="section-tag">Why FOODELLA</p>
+            <h2 class="section-title">Our Promise</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+                <h3>100% Natural</h3>
+                <p>No preservatives, no additives, no artificial colors. Just pure ingredients the way nature intended.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fas fa-mortar-pestle"></i></div>
+                <h3>Stone Ground</h3>
+                <p>Traditional stone-ground technique preserves essential oils, aroma, and nutrients in every spice.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fas fa-hand-sparkles"></i></div>
+                <h3>Handpicked</h3>
+                <p>Every almond, every pistachio is carefully selected and sorted by hand for consistent premium quality.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fas fa-certificate"></i></div>
+                <h3>Certified Pure</h3>
+                <p>Lab-tested for purity and free from adulteration. We guarantee what we promise — nothing less.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials" id="testimonials">
+        <div class="section-header reveal">
+            <p class="section-tag">Love Letters</p>
+            <h2 class="section-title">What They Say</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="testimonial-slider reveal">
+            <div class="testimonial-item active">
+                <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+                <p class="testimonial-text">FOODELLA's dry fruits are unlike anything I've ever tasted. The cashews are so creamy and fresh — you can instantly tell these are premium quality. My family refuses to buy from anywhere else now.</p>
+                <div class="testimonial-author">
+                    <h4>AYESHA KHAN</h4>
+                    <p>Home Chef, Lahore</p>
+                </div>
+            </div>
+            <div class="testimonial-item">
+                <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+                <p class="testimonial-text">The Garam Masala is an absolute game-changer. The aroma fills the entire kitchen, and the flavor is so deep and complex. This is what real spice should taste like — pure and honest.</p>
+                <div class="testimonial-author">
+                    <h4>IMRAN MALIK</h4>
+                    <p>Restaurant Owner, Karachi</p>
+                </div>
+            </div>
+            <div class="testimonial-item">
+                <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+                <p class="testimonial-text">I ordered the Lakadong Haldi and Kashmiri Lal Mirch combo. The color, the aroma, the taste — everything screams purity. FOODELLA has set a new standard in Pakistan for quality.</p>
+                <div class="testimonial-author">
+                    <h4>FATIMA RIZVI</h4>
+                    <p>Food Blogger, Islamabad</p>
+                </div>
+            </div>
+        </div>
+        <div class="testimonial-nav">
+            <div class="testimonial-dot active" data-index="0"></div>
+            <div class="testimonial-dot" data-index="1"></div>
+            <div class="testimonial-dot" data-index="2"></div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="images/images(7).jfif" alt="Gallery 1">
+                <div class="gallery-item-overlay"><i class="fab fa-instagram"></i></div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/variety-of-spices-a-group-of-spices-and-herbs-on-a-wooden-surface-photo.jpg" alt="Gallery 2">
+                <div class="gallery-item-overlay"><i class="fab fa-instagram"></i></div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/images(8).jfif" alt="Gallery 3">
+                <div class="gallery-item-overlay"><i class="fab fa-instagram"></i></div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/images(9).jfif" alt="Gallery 4">
+                <div class="gallery-item-overlay"><i class="fab fa-instagram"></i></div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/images(10).jfif" alt="Gallery 5">
+                <div class="gallery-item-overlay"><i class="fab fa-instagram"></i></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter" id="contact">
+        <div class="reveal">
+            <p class="section-tag" style="font-family: 'Great Vibes', cursive; font-size: 1.5rem; color: var(--gold); margin-bottom: 10px;">Stay Connected</p>
+            <h2>JOIN THE FOODELLA FAMILY</h2>
+            <p>Subscribe to receive exclusive offers, recipes, and updates on new arrivals.</p>
+            <form class="newsletter-form" onsubmit="return false;">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img src="images/Annotation 2026-08-06 124805.png" alt="FOODELLA">
+                <p>Handpicked Premium Dry Fruits & Stone-Ground Masale. 100% Authentic Purity from Lahore, Pakistan. Taste of Purity — in every bite, every grain.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">Our Story</a></li>
+                    <li><a href="#products">Dry Fruits</a></li>
+                    <li><a href="#products">Masala</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Policies</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Return Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <ul class="footer-contact">
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span style="color: var(--gray); font-size: 0.9rem;">St 8 - A, SultanPura Road, Lahore, Pakistan</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-phone"></i>
+                        <span style="color: var(--gray); font-size: 0.9rem;">03055407657</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        <span style="color: var(--gray); font-size: 0.9rem;">foodellapvtltd@gmail.com</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-globe"></i>
+                        <span style="color: var(--gray); font-size: 0.9rem;">www.foodella.com</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 FOODELLA PVT LTD — TASTE OF PURITY. ALL RIGHTS RESERVED.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top"><i class="fas fa-chevron-up"></i></a>
+
+    <!-- ============================================
+         JAVASCRIPT & JQUERY
+         ============================================ -->
+    <script>
+        $(document).ready(function() {
+
+            // Preloader
+            $(window).on('load', function() {
+                setTimeout(function() {
+                    $('#preloader').fadeOut(800, function() {
+                        $(this).remove();
+                    });
+                }, 1500);
+            });
+
+            // Custom Cursor
+            $(document).on('mousemove', function(e) {
+                $('.cursor-dot').css({
+                    'left': e.clientX - 4,
+                    'top': e.clientY - 4
+                });
+                $('.cursor-outline').css({
+                    'left': e.clientX - 17.5,
+                    'top': e.clientY - 17.5
+                });
+            });
+
+            $('a, button, .product-card').on('mouseenter', function() {
+                $('.cursor-outline').css({
+                    'width': '55px',
+                    'height': '55px',
+                    'left': '-=10',
+                    'top': '-=10',
+                    'border-color': '#E8D5A3'
+                });
+            }).on('mouseleave', function() {
+                $('.cursor-outline').css({
+                    'width': '35px',
+                    'height': '35px',
+                    'border-color': '#C5A059'
+                });
+            });
+
+            // Navbar Scroll Effect
+            $(window).on('scroll', function() {
+                if ($(this).scrollTop() > 80) {
+                    $('.navbar').addClass('scrolled');
+                } else {
+                    $('.navbar').removeClass('scrolled');
+                }
+
+                // Back to Top
+                if ($(this).scrollTop() > 500) {
+                    $('.back-to-top').addClass('show');
+                } else {
+                    $('.back-to-top').removeClass('show');
+                }
+            });
+
+            // Mobile Menu Toggle
+            $('.menu-toggle').on('click', function() {
+                $('.nav-links').toggleClass('open');
+                $(this).toggleClass('active');
+            });
+
+            $('.nav-links a').on('click', function() {
+                $('.nav-links').removeClass('open');
+                $('.menu-toggle').removeClass('active');
+            });
+
+            // Hero Particles
+            for (let i = 0; i < 30; i++) {
+                const size = Math.random() * 3 + 1;
+                const left = Math.random() * 100;
+                const delay = Math.random() * 8;
+                const duration = Math.random() * 6 + 5;
+                $('#particles').append(
+                    `<div class="particle" style="width:${size}px; height:${size}px; left:${left}%; animation-delay:${delay}s; animation-duration:${duration}s;"></div>`
+                );
+            }
+
+            // Scroll Reveal Animation
+            function revealOnScroll() {
+                const windowHeight = $(window).height();
+                const scrollTop = $(window).scrollTop();
+
+                $('.reveal').each(function() {
+                    const elementTop = $(this).offset().top;
+                    if (scrollTop + windowHeight - 100 > elementTop) {
+                        $(this).addClass('active');
+                    }
+                });
+            }
+
+            $(window).on('scroll', revealOnScroll);
+            revealOnScroll();
+
+            // Product Filter
+            $('.filter-btn').on('click', function() {
+                const filter = $(this).data('filter');
+                
+                $('.filter-btn').removeClass('active');
+                $(this).addClass('active');
+
+                if (filter === 'all') {
+                    $('.product-card').show().css({
+                        'opacity': '0',
+                        'transform': 'translateY(20px)'
+                    });
+                    setTimeout(function() {
+                        $('.product-card').css({
+                            'opacity': '1',
+                            'transform': 'translateY(0)'
+                        });
+                    }, 50);
+                } else {
+                    $('.product-card').hide();
+                    $(`.product-card[data-category="${filter}"]`).show().css({
+                        'opacity': '0',
+                        'transform': 'translateY(20px)'
+                    });
+                    setTimeout(function() {
+                        $(`.product-card[data-category="${filter}"]`).css({
+                            'opacity': '1',
+                            'transform': 'translateY(0)'
+                        });
+                    }, 50);
+                }
+            });
+
+            // Testimonial Slider
+            let currentTestimonial = 0;
+            const testimonials = $('.testimonial-item');
+            const dots = $('.testimonial-dot');
+
+            function showTestimonial(index) {
+                testimonials.removeClass('active');
+                dots.removeClass('active');
+                $(testimonials[index]).addClass('active');
+                $(dots[index]).addClass('active');
+                currentTestimonial = index;
+            }
+
+            dots.on('click', function() {
+                const index = $(this).data('index');
+                showTestimonial(index);
+            });
+
+            // Auto-slide testimonials
+            setInterval(function() {
+                let next = (currentTestimonial + 1) % testimonials.length;
+                showTestimonial(next);
+            }, 5000);
+
+            // Smooth scroll for all anchor links
+            $('a[href^="#"]').on('click', function(e) {
+                e.preventDefault();
+                const target = $(this.getAttribute('href'));
+                if (target.length) {
+                    $('html, body').animate({
+                        scrollTop: target.offset().top - 80
+                    }, 800, 'swing');
+                }
+            });
+
+            // Add to cart button animation
+            $('.product-add').on('click', function(e) {
+                e.stopPropagation();
+                const btn = $(this);
+                btn.html('<i class="fas fa-check"></i>');
+                btn.css({
+                    'background': 'var(--gold)',
+                    'color': 'var(--black)'
+                });
+                
+                setTimeout(function() {
+                    btn.html('<i class="fas fa-plus"></i>');
+                    btn.css({
+                        'background': 'transparent',
+                        'color': 'var(--gold)'
+                    });
+                }, 1500);
+            });
+
+        });
+    </script>
+
+</body>
+</html>
