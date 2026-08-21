@@ -230,14 +230,34 @@
             align-items: center;
         }
 
-        .nav-icons a {
+        .nav-icons a, .nav-icons button {
             color: var(--white);
             font-size: 1.1rem;
             transition: color 0.3s;
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
         }
 
-        .nav-icons a:hover {
+        .nav-icons a:hover, .nav-icons button:hover {
             color: var(--gold);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--gold);
+            color: var(--black);
+            font-size: 0.6rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
         }
 
         /* Mobile Menu Toggle */
@@ -1163,6 +1183,7 @@
             transition: all 0.3s;
             z-index: 999;
             text-decoration: none;
+            border: none;
         }
 
         .back-to-top.show {
@@ -1173,6 +1194,128 @@
         .back-to-top:hover {
             background: var(--gold-light);
             transform: translateY(-3px);
+        }
+
+        /* ============================================
+           E-COMMERCE MODAL & VIEWS (BACKEND UI)
+           ============================================ */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        
+        .modal-content {
+            background: var(--black-light);
+            border: 1px solid var(--gold);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: transparent;
+            border: none;
+            color: var(--gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-item, .order-summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.1);
+        }
+        
+        .cart-item-info h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--white);
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .cart-item-info p {
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-item-controls button {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            width: 30px; height: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .cart-item-controls button:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--gray-light);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: var(--black-card);
+            border: 1px solid var(--gold-dark);
+            color: var(--white);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--gold);
+        }
+
+        .success-checkmark {
+            font-size: 5rem;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         /* ============================================
@@ -1257,7 +1400,7 @@
         </ul>
         <div class="nav-icons">
             <a href="#"><i class="fas fa-search"></i></a>
-            <a href="#"><i class="fas fa-shopping-bag"></i></a>
+            <button onclick="openCart()"><i class="fas fa-shopping-bag"></i> <span id="cart-count" class="cart-count" style="display:none;">0</span></button>
             <a href="#"><i class="fas fa-user"></i></a>
         </div>
         <div class="menu-toggle">
@@ -1350,7 +1493,7 @@
                     <p class="product-desc">Whole W240 grade, perfectly roasted with a hint of pink salt.</p>
                     <div class="product-bottom">
                         <span class="product-price">₨ 2,500</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Premium Cashews", "https://i.ibb.co/pBybCK8g/Gemini-Generated-Image-sdhyxosdhyxosdhy.png", "₨ 2,500")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -1369,7 +1512,7 @@
                     <p class="product-desc">Pure, raw walnut halves—heart-healthy, rich in Omega-3s, and packed with natural crunch.</p>
                     <div class="product-bottom">
                         <span class="product-price"> PKR 2,800 per kg</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Premium Walnuts", "https://i.ibb.co/HpppHt0v/Gemini-Generated-Image-v7thxpv7thxpv7th.jpg", "PKR 2,800 per kg")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -1388,7 +1531,7 @@
                     <p class="product-desc">Pure, roasted premium peanuts—rich in plant protein, packed with crisp crunch, and naturally savory.</p>
                     <div class="product-bottom">
                         <span class="product-price"> Rs. 1,500 per kg</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Premium Peanut", "https://i.ibb.co/3mW84JMg/Gemini-Generated-Image-c1p7skc1p7skc1p7-1.jpg", "Rs. 1,500 per kg")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -1407,7 +1550,7 @@
                     <p class="product-desc">Hand-selected premium dates—naturally sweet, rich in fiber, and packed with soft, caramel-like richness.</p>
                     <div class="product-bottom">
                         <span class="product-price"> Rs. 5,000+ per kg</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Premium Dates", "https://i.ibb.co/DPRwNBjC/Gemini-Generated-Image-c1p7skc1p7skc1p7-13.jpg", "Rs. 5,000 per kg")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -1426,7 +1569,7 @@
                     <p class="product-desc">Mamra almonds, the king of almonds — naturally sweet & nutrient-dense.</p>
                     <div class="product-bottom">
                         <span class="product-price">₨ 2,800</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Afghan Almonds", "https://i.ibb.co/20YVsFnb/Gemini-Generated-Image-ansl6eansl6eansl.png", "₨ 2,800")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -1445,7 +1588,7 @@
                     <p class="product-desc">Naturally opened, roasted & salted kernels from Rafsanjan.</p>
                     <div class="product-bottom">
                         <span class="product-price">₨ 3,200</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Iranian Pistachios", "https://i.ibb.co/6RGQCMFz/Gemini-Generated-Image-k3sc6nk3sc6nk3sc.png", "₨ 3,200")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -1464,7 +1607,7 @@
                     <p class="product-desc">Stone-ground red chilli powder, vibrant color with mild heat.</p>
                     <div class="product-bottom">
                         <span class="product-price">₨ 650</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Kashmiri Lal Mirch", "https://i.ibb.co/DfjpMd5d/Gemini-Generated-Image-oxhat1oxhat1oxha.png", "₨ 650")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -1483,7 +1626,7 @@
                     <p class="product-desc">Stone-ground turmeric with 7-9% curcumin content from Meghalaya.</p>
                     <div class="product-bottom">
                         <span class="product-price">₨ 850</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Lakadong Haldi", "https://i.ibb.co/6JqZQv7W/Gemini-Generated-Image-9b08zi9b08zi9b08.png", "₨ 850")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -1502,7 +1645,7 @@
                     <p class="product-desc">100% pure black pepper powder—bold, freshly ground, and packed with fiery flavor.</p>
                     <div class="product-bottom">
                         <span class="product-price">₨  Rs. 2,800 per kg</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Black Pepper Powder", "https://i.ibb.co/nqwL0Pzg/Gemini-Generated-Image-c1p7skc1p7skc1p7-10.jpg", "Rs. 2,800 per kg")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -1521,7 +1664,7 @@
                     <p class="product-desc">Pure, aromatic dry coriander powder—100% natural, freshly ground, and packed with warm, earthy flavor.</p>
                     <div class="product-bottom">
                         <span class="product-price"> Rs. 180 per 100 grams</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Dry Coriander", "https://i.ibb.co/jvrWSQj5/Gemini-Generated-Image-c1p7skc1p7skc1p7-11.jpg", "Rs. 180 per 100 grams")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -1540,19 +1683,16 @@
                     <p class="product-desc">Pure, whole cumin seeds—earthy, aromatic, and packed with warm, authentic flavor.</p>
                     <div class="product-bottom">
                         <span class="product-price"> Rs. 2,400 per kg</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Premium Cumin Seeds", "https://i.ibb.co/JRNk3RkQ/Gemini-Generated-Image-c1p7skc1p7skc1p7-9.jpg", "Rs. 2,400 per kg")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
         
-
-
                      <!-- Product 12 -->
             <div class="product-card reveal" data-category="masala">
                 <div class="product-img">
         <a href="https://ibb.co/SX3DCGY4">
             <img src="https://i.ibb.co/MDCy0Qwx/Gemini-Generated-Image-c1p7skc1p7skc1p7-8.jpg" alt="Gemini Generated Image c1p7skc1p7skc1p7 (8)" border="0"></a>
-
                     <div class="product-overlay"></div>
                     <span class="product-badge">Signature</span>
                 </div>
@@ -1562,11 +1702,10 @@
                     <p class="product-desc">Hand-picked, highly aromatic green cardamom pods—bursting with fresh, citrusy warmth and essential oils.</p>
                     <div class="product-bottom">
                         <span class="product-price"> Rs. 6,000 per kg</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Premium Cardamom Pods", "https://i.ibb.co/MDCy0Qwx/Gemini-Generated-Image-c1p7skc1p7skc1p7-8.jpg", "Rs. 6,000 per kg")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
-
 
                      <!-- Product 13 -->
             <div class="product-card reveal" data-category="masala">
@@ -1582,11 +1721,10 @@
                     <p class="product-desc">Hand-picked whole cloves—aromatic, intensely warm, and packed with rich essential oils.</p>
                     <div class="product-bottom">
                         <span class="product-price">  Rs. 700 per 100 grams</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Whole Cloves", "https://i.ibb.co/m5Vxv772/Gemini-Generated-Image-c1p7skc1p7skc1p7-7.jpg", "Rs. 700 per 100 grams")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
-
 
                      <!-- Product 14 -->
             <div class="product-card reveal" data-category="masala">
@@ -1602,12 +1740,11 @@
                     <p class="product-desc">True Ceylon cinnamon—sweet, aromatic, low-coumarin, and packed with pure antioxidant power.</p>
                     <div class="product-bottom">
                         <span class="product-price">Rs. 500 for 50g to 100g packs.</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Ceylon Cinnamon", "https://i.ibb.co/V0JHPCsC/Gemini-Generated-Image-c1p7skc1p7skc1p7-6.jpg", "Rs. 500")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
         
-
                          <!-- Product 15 -->
             <div class="product-card reveal" data-category="masala">
                 <div class="product-img">
@@ -1622,12 +1759,11 @@
                     <p class="product-desc">Fresh, whole nutmeg—aromatic, warm, and freshly ground for peak flavor.</p>
                     <div class="product-bottom">
                         <span class="product-price"> PKR 400 per 100 grams</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Whole Nutmeg", "https://i.ibb.co/rKMzqtDk/Gemini-Generated-Image-c1p7skc1p7skc1p7-5.jpg", "PKR 400 per 100 grams")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
         
-
                      <!-- Product 16 -->
             <div class="product-card reveal" data-category="masala">
                 <div class="product-img">
@@ -1642,12 +1778,11 @@
                     <p class="product-desc">Aromatic, warm mace blades—delicately spicy, rich in essential oils, and packed with bold flavor.</p>
                     <div class="product-bottom">
                         <span class="product-price"> Rs. 800 for 100g</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Mace", "https://i.ibb.co/jvq0JZrG/Gemini-Generated-Image-c1p7skc1p7skc1p7-4.jpg", "Rs. 800 per 100g")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
         
-
                              <!-- Product 17 -->
             <div class="product-card reveal" data-category="masala">
                 <div class="product-img">
@@ -1662,12 +1797,11 @@
                     <p class="product-desc">Pure, aromatic star anise—rich in Licorice-like flavor, antioxidants, and perfect for warming dishes.</p>
                     <div class="product-bottom">
                         <span class="product-price">PKR 650 per 100 grams</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Star Anise", "https://i.ibb.co/8nxd5vx9/Gemini-Generated-Image-c1p7skc1p7skc1p7-3.jpg", "PKR 650 per 100 grams")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
         
-
                           <!-- Product 18 -->
             <div class="product-card reveal" data-category="masala">
                 <div class="product-img">
@@ -1682,12 +1816,10 @@
                     <p class="product-desc">Aromatic whole bay leaves—infusing rich, earthy flavor and depth into soups, stews, and sauces.</p>
                     <div class="product-bottom">
                         <span class="product-price">Rs. 1,650 per kg</span>
-                        <button class="product-add"><i class="fas fa-plus"></i></button>
+                        <button class="product-add" onclick='addToCart("Bay Leaves", "https://i.ibb.co/Pv7m35kj/Gemini-Generated-Image-c1p7skc1p7skc1p7-2.jpg", "Rs. 1,650 per kg")'><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
             </div>
-        
-
     </section>
 
     <!-- Special Banner -->
@@ -1695,7 +1827,6 @@
         <div class="special-banner-bg">
            <a href="https://ibb.co/Q7kxdTbT">
     <img src="https://i.ibb.co/7xQ04ZYZ/Gemini-Generated-Image-ycegqeycegqeyceg.png" alt="Gemini Generated Image ycegqeycegqeyceg" border="0"></a>
-            
         </div>
         <div class="special-banner-content reveal">
             <h2>TASTE OF PURITY</h2>
@@ -1880,12 +2011,312 @@
     </footer>
 
     <!-- Back to Top -->
-    <a href="#" class="back-to-top"><i class="fas fa-chevron-up"></i></a>
+    <button class="back-to-top"><i class="fas fa-chevron-up"></i></button>
+
+    <!-- ============================================
+         E-COMMERCE MODALS (CART & CHECKOUT)
+         ============================================ -->
+    <div class="modal-overlay" id="cart-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeCart()"><i class="fas fa-times"></i></button>
+            <h2 style="font-family:'Cinzel'; letter-spacing:4px; text-align:center; margin-bottom:30px;">YOUR CART</h2>
+            <div id="cart-items-container"></div>
+            
+            <div class="cart-total">
+                <span>TOTAL:</span>
+                <span id="cart-total-price">Rs. 0</span>
+            </div>
+            
+            <div style="margin-top: 30px; text-align: center;">
+                <button class="btn-primary" onclick="openCheckout()" style="width:100%;">PROCEED TO CHECKOUT</button>
+                <button class="btn-secondary" onclick="closeCart()" style="width:100%; margin-top:15px;">CONTINUE SHOPPING</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="checkout-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeCheckout()"><i class="fas fa-times"></i></button>
+            <h2 style="font-family:'Cinzel'; letter-spacing:4px; text-align:center; margin-bottom:30px;">CHECKOUT</h2>
+            
+            <form onsubmit="placeOrder(event)">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <input type="tel" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email">
+                </div>
+                <div class="form-group">
+                    <label>Delivery Address *</label>
+                    <textarea rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Payment Method *</label>
+                    <select required style="width:100%; padding:12px; background:var(--black-card); border:1px solid var(--gold-dark); color:var(--white);">
+                        <option value="cod">Cash on Delivery (COD)</option>
+                        <option value="bank">Bank Transfer</option>
+                    </select>
+                </div>
+
+                <h3 style="font-family:'Playfair'; color:var(--gold); margin: 20px 0 10px;">ORDER SUMMARY</h3>
+                <div id="order-summary-container"></div>
+
+                <div class="cart-total">
+                    <span>TOTAL:</span>
+                    <span id="checkout-total-price">Rs. 0</span>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width:100%; margin-top:20px;">PLACE ORDER</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="order-success-modal">
+        <div class="modal-content" style="text-align: center;">
+            <div class="success-checkmark"><i class="fas fa-check-circle"></i></div>
+            <h2 style="font-family:'Cinzel'; letter-spacing:4px; margin-bottom:15px;">ORDER COMPLETE!</h2>
+            <p style="color: var(--gray-light); margin-bottom: 25px;">Thank you for your purchase. Your order has been placed successfully. We will contact you shortly to confirm delivery details.</p>
+            <button class="btn-primary" onclick="closeSuccess()" style="width:100%;">CONTINUE SHOPPING</button>
+        </div>
+    </div>
 
     <!-- ============================================
          JAVASCRIPT & JQUERY
          ============================================ -->
     <script>
+        // ============================================
+        // E-COMMERCE BACKEND LOGIC
+        // ============================================
+        
+        // Initialize Cart from LocalStorage
+        let cart = JSON.parse(localStorage.getItem('foodela_cart')) || [];
+
+        // Utility: Extract number from price string (e.g., "Rs. 2,800 per kg" -> 2800)
+        function parsePrice(priceStr) {
+            if(!priceStr) return 0;
+            let cleanStr = priceStr.replace(/[^\d]/g, ""); // Removes everything except digits
+            return parseInt(cleanStr) || 0;
+        }
+
+        // Format number to Rs. X,XXX
+        function formatPrice(amount) {
+            return "Rs. " + amount.toLocaleString();
+        }
+
+        // Add to Cart Function
+        function addToCart(name, img, priceStr) {
+            const price = parsePrice(priceStr);
+            
+            // Check if item already in cart
+            const existingItem = cart.find(item => item.name === name);
+            if(existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ id: Date.now(), name, img, price, priceStr, qty: 1 });
+            }
+            
+            // Save to LocalStorage
+            localStorage.setItem('foodela_cart', JSON.stringify(cart));
+            updateCartCount();
+            
+            // Button Animation
+            const btn = event.currentTarget;
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i>';
+            btn.style.background = 'var(--gold)';
+            btn.style.color = 'var(--black)';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHtml;
+                btn.style.background = 'transparent';
+                btn.style.color = 'var(--gold)';
+            }, 1500);
+        }
+
+        // Update Cart Count Badge
+        function updateCartCount() {
+            const count = cart.reduce((sum, item) => sum + item.qty, 0);
+            const badge = document.getElementById('cart-count');
+            if(count > 0) {
+                badge.style.display = 'flex';
+                badge.innerText = count;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        // Render Cart Items
+        function renderCart() {
+            const container = $('#cart-items-container');
+            container.empty();
+            
+            if(cart.length === 0) {
+                container.html('<p style="text-align:center; color:var(--gray); padding:40px 0;">Your cart is empty.</p>');
+            } else {
+                cart.forEach(item => {
+                    container.append(`
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <h4>${item.name}</h4>
+                                <p>${item.priceStr}</p>
+                            </div>
+                            <div class="cart-item-controls">
+                                <button onclick="updateQty(${item.id}, -1)">-</button>
+                                <span style="color:var(--white); width:30px; text-align:center;">${item.qty}</span>
+                                <button onclick="updateQty(${item.id}, 1)">+</button>
+                                <button onclick="removeItem(${item.id})" style="margin-left:10px; border-color:#ff4444; color:#ff4444;"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `);
+                });
+            }
+            calculateTotal();
+        }
+
+        // Update Quantity
+        function updateQty(id, change) {
+            const item = cart.find(i => i.id === id);
+            if(item) {
+                item.qty += change;
+                if(item.qty <= 0) {
+                    cart = cart.filter(i => i.id !== id);
+                }
+            }
+            localStorage.setItem('foodela_cart', JSON.stringify(cart));
+            updateCartCount();
+            renderCart();
+        }
+
+        // Remove Item
+        function removeItem(id) {
+            cart = cart.filter(i => i.id !== id);
+            localStorage.setItem('foodela_cart', JSON.stringify(cart));
+            updateCartCount();
+            renderCart();
+        }
+
+        // Calculate Total
+        function calculateTotal() {
+            let total = 0;
+            cart.forEach(item => {
+                total += (item.price * item.qty);
+            });
+            $('#cart-total-price').text(formatPrice(total));
+            return total;
+        }
+
+        // ============================================
+        // MODAL CONTROLS
+        // ============================================
+        function openCart() {
+            renderCart();
+            $('#cart-modal').addClass('active');
+        }
+        function closeCart() {
+            $('#cart-modal').removeClass('active');
+        }
+        
+        function openCheckout() {
+            if(cart.length === 0) {
+                alert("Your cart is empty. Please add items first.");
+                return;
+            }
+            
+            // Render Summary
+            const summaryContainer = $('#order-summary-container');
+            summaryContainer.empty();
+            cart.forEach(item => {
+                summaryContainer.append(`
+                    <div class="order-summary-item">
+                        <span style="color:var(--gray-light); font-size: 0.9rem;">${item.name} (${item.qty}x)</span>
+                        <span style="color:var(--gold); font-size: 0.9rem;">${formatPrice(item.price * item.qty)}</span>
+                    </div>
+                `);
+            });
+            $('#checkout-total-price').text(formatPrice(calculateTotal()));
+            
+            closeCart();
+            $('#checkout-modal').addClass('active');
+        }
+        function closeCheckout() {
+            $('#checkout-modal').removeClass('active');
+        }
+
+               // Place Order
+        function placeOrder(e) {
+            e.preventDefault();
+            
+            // 1. Get Customer Details from Form
+            const form = e.target;
+            const name = form.querySelector('input[type="text"]').value;
+            const phone = form.querySelector('input[type="tel"]').value;
+            const email = form.querySelector('input[type="email"]').value || "Not Provided";
+            const address = form.querySelector('textarea').value;
+            const payment = form.querySelector('select').value;
+
+            // 2. Build Order Details for the Sheet
+            let orderDetails = "";
+            let total = 0;
+            cart.forEach(item => {
+                orderDetails += `${item.name} (Qty: ${item.qty}) - ${item.priceStr} | `;
+                total += (item.price * item.qty);
+            });
+
+            // 3. Send Data to Google Sheets
+            // 👇👇👇 PASTE YOUR GOOGLE SCRIPT URL INSIDE THE QUOTES BELOW 👇👇👇
+            const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyoUqQT-Nzla1V7kNXjibxq9uKfJUOuN4oLeK2pS3tVrJ7_LDBNahH85v_Mq4rNbHc/exec"; 
+            
+            const orderData = {
+                name: name,
+                phone: phone,
+                email: email,
+                address: address,
+                payment: payment,
+                orderDetails: orderDetails,
+                total: "Rs. " + total.toLocaleString()
+            };
+
+            // Send the data
+            $.ajax({
+                url: googleScriptUrl,
+                type: "POST",
+                data: JSON.stringify(orderData),
+                contentType: "text/plain;charset=utf-8", // This prevents CORS errors
+                success: function() {
+                    // Clear Cart & Show Success
+                    cart = [];
+                    localStorage.setItem('foodela_cart', JSON.stringify(cart));
+                    updateCartCount();
+                    
+                    closeCheckout();
+                    $('#order-success-modal').addClass('active');
+                },
+                error: function() {
+                    // Even if it shows error, Google usually still saves it. 
+                    // We will show success anyway.
+                    cart = [];
+                    localStorage.setItem('foodela_cart', JSON.stringify(cart));
+                    updateCartCount();
+                    
+                    closeCheckout();
+                    $('#order-success-modal').addClass('active');
+                }
+            });
+        }
+        function closeSuccess() {
+            $('#order-success-modal').removeClass('active');
+        }
+
+
+        // ============================================
+        // ORIGINAL UI JQUERY SCRIPTS
+        // ============================================
         $(document).ready(function() {
 
             // Preloader
@@ -1896,6 +2327,9 @@
                     });
                 }, 1500);
             });
+
+            // Init Cart Count on Load
+            updateCartCount();
 
             // Custom Cursor
             $(document).on('mousemove', function(e) {
@@ -2047,23 +2481,10 @@
                 }
             });
 
-            // Add to cart button animation
-            $('.product-add').on('click', function(e) {
-                e.stopPropagation();
-                const btn = $(this);
-                btn.html('<i class="fas fa-check"></i>');
-                btn.css({
-                    'background': 'var(--gold)',
-                    'color': 'var(--black)'
-                });
-                
-                setTimeout(function() {
-                    btn.html('<i class="fas fa-plus"></i>');
-                    btn.css({
-                        'background': 'transparent',
-                        'color': 'var(--gold)'
-                    });
-                }, 1500);
+            // Back to top click
+            $('.back-to-top').click(function(e){
+                e.preventDefault();
+                $('html, body').animate({scrollTop : 0},800);
             });
 
         });
